@@ -1586,6 +1586,28 @@ UE中默认所有pawn和character自带刺激源 -> 去Config -> DefaultGame.ini
 \end{figure}
 
 
+
+%---------------------------------------------新章节
+\chapter{自我设计}
+
+\section{角色死亡动画}
+
+\begin{itemize}
+    \item 目前给角色死亡加了一个动画组，但是这些动画会让角色产生长位移。而角色位移过后，播放完蒙太奇，会率先回到abp中的idle状态，因此会飞回原地
+    -> 蒙太奇设置了混出时间，导致在动画的末尾和ABP中的状态混合，设置混出时间为0即可。播放完成后立即设置模拟物理。
+
+    \item 允许根据攻击方向来播放死亡动画：向前和向后（使用攻击者与受击者的前向向量的点积计算）。如果点积大于0,则玩家从背面攻击，角色向前飞
+
+    \item 增加死亡变淡消失的效果。需要在角色材质中“不透明蒙版”连接"DitherTemporalAA"，将Alpha值设为参数。再在函数中调用时间轴将Alpha值从1调整到0（F9.1）
+
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\textwidth]{角色透明.png}
+\caption{角色透明}
+\end{figure}
+
 %---------------------------------------------新章节
 
 \chapter{游戏概念设计}
@@ -1598,6 +1620,27 @@ UE中默认所有pawn和character自带刺激源 -> 去Config -> DefaultGame.ini
 
 
 重大失误：对整个动画文件夹重命名，导致游戏文件崩坏 -> 从git中强行合并到上次提交的分支
+
+
+% 豪礼1：175套UE卡通场景合集
+% 豪礼2：130套游戏音效合集
+% 豪礼3：3583个常用UE人物动作
+% 豪礼4：400个UE人物角色合集
+% 豪礼5：5套UE精选实战教程及素材
+% 豪礼6：230套UE各种特效素材
+% 豪礼7：1200多棵UE常用树木植物
+% 豪礼8：77套UE末日生存场景合集
+% 豪礼9：112个UE室内环境场景
+
+% 豪礼1链接：https://pan.baidu.com/s/1kbNqhgJCgBMotc-sXtulaA?pwd=aaaa 提取码: aaaa
+% 豪礼2链接：https://pan.baidu.com/s/1r9RSWQ2X1nIrdHqOmPlBYQ?pwd=aaaa 提取码: aaaa
+% 豪礼3链接：https://pan.baidu.com/s/1uIUrXbgb5PSPa2lP0uHBKA?pwd=aaaa 提取码: aaaa
+% 豪礼4链接：https://pan.baidu.com/s/1Lp0_5ZzvTOPB7WXpP7l1-A?pwd=aaaa 提取码: aaaa
+% 豪礼5链接：https://pan.baidu.com/s/17HBec4BYqHKv63F7T95bQA?pwd=aaaa 提取码: aaaa
+% 豪礼6链接：https://pan.baidu.com/s/1b6PzCWuZfKw8oAYDTbJfqQ?pwd=aaaa 提取码: aaaa
+% 豪礼7链接：https://pan.baidu.com/s/19H0ViniBGjGPWLUC1_HImg?pwd=aaaa 提取码: aaaa
+% 豪礼8链接：https://pan.baidu.com/s/1aTvsmtOLVIeOQiEVFnq6Sw?pwd=aaaa 提取码: aaaa
+% 豪礼9链接：https://pan.baidu.com/s/1vWcjyzqALyH-HcdO5WeVfA?pwd=aaaa 提取码: aaaa
 
 
 

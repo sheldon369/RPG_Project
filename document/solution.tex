@@ -1592,6 +1592,44 @@ UE中默认所有pawn和character自带刺激源 -> 去Config -> DefaultGame.ini
 \caption{应用伤害}
 \end{figure}
 
+\section{动物骑乘}
+
+\begin{itemize}
+    \item  新建可供骑乘的角色蓝图（狮子），并不是之前的动物蓝图的子类。
+    \item  添加球体碰撞体作为坐骑触发器，并添加BPI\_Mount用作交互。
+   
+    \item  给狮子添加动画(F8.7)，平时趴在地上，看到玩家才起来，并面向玩家（F8.6），玩家按下F键后骑上去。
+    \item  当骑上狮子以后，玩家控制器的控制权转移到狮子上，并且将玩家角色附着在狮子上。因此需要连接一个弹簧臂摄像机，勾选“使用pawn控制旋转”，禁用“使用控制器旋转yaw”，并勾选移动组件“将旋转朝向运动”
+    \item  骑狮子以后，首先要隐藏起我们原来的第三人称角色。接着在狮子上放置替身模型,并调整动画腿部打开一点。在狮子蓝图中添加控制器逻辑（从玩家控制器中粘贴）
+    \item  给狮子的运动动画做了二维处理，允许传递向右向量从而实现倾斜运动。
+    \item  当在狮子状态时，再次使用交互键可以下狮子。（使用“获取类的actor节点找回角色”）下狮子时我们实际的角色实际上还在原地，因此要对其移动，我们在狮子中添加一个不可见无碰撞的骨骼作为参考变换。
+    \item 
+
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\textwidth]{狮子朝向.png}
+\caption{狮子朝向玩家}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\textwidth]{狮子ABP.png}
+\caption{狮子ABP}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\textwidth]{上下狮子.png}
+\caption{上下狮子}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1.0\textwidth]{宠物跟随.png}
+\caption{宠物跟随}
+\end{figure}
 
 
 %---------------------------------------------新章节
@@ -1679,6 +1717,7 @@ UE中默认所有pawn和character自带刺激源 -> 去Config -> DefaultGame.ini
     \item  闪避（X）：消耗耐力大范围范围，区分普通闪避和空中闪避
     \item  攀爬（Q）：使用飞行模式，附着在表面。将向上输入（WS）改为上下移动了。攀爬时持续发出射线检测是否命中墙体，若命中，则依据命中点的法线修正玩家角度
     \item  抓边攀爬：攀爬至表面或者跳跃时再按跳跃，在角色头顶发出水平射线检测，一旦没命中说明头部位置为空，再发出若干条垂直射线，命中位置即攀爬边缘。
+    \item  游泳：水体中时，玩家会触发游泳，只接受ws输入
 \end{itemize}
 
 属性系统：
@@ -1712,10 +1751,11 @@ AI系统：
     \item  dummy:最开始的测试假人，无任何AI逻辑，拥有血条，可以被刺杀以及攻击系统伤害。受击会扣血，播放受击动画并且产生击退，死亡会变成布娃娃
     \item  AI：在dummy的基础上增加了行为树与黑板，使用AIController控制（带有AI Perception，启用视力与听力，事件开始时启用行为树，目标感知更新时，获取刺激源，并设置黑板中的值） 。 
     AI如果看到玩家了，则使用服务判断与玩家的距离是否在范围内，并且追逐玩家。判断为真则攻击玩家。如果没看到，则如果收到了调查的噪点，去调查点调查，否则在随机半径内巡逻。
-    AI攻击任务使用接口进行通知，并且使用玩家攻击系统中的逻辑实现攻击动画的播放与检测伤害，死亡后变成布娃娃，并且通过时间轴慢慢变淡消失。      
+    AI攻击任务使用接口进行通知，并且使用玩家攻击系统中的逻辑实现攻击动画的播放与检测伤害，死亡后随机播放死亡动画，变成布娃娃，并且通过时间轴慢慢变淡消失。      
     \item  AI Boss: AI的子类，采用不同的行为树与黑板。相较于普通AI，boss体型更大，攻击播放更慢，有更高的基础伤害，拥有血条UI显示在玩家界面，不会被石子干扰以及刺杀。
-    \item AI Civilian：AI的子类，不允许被攻击（移除damageable标签），只会巡逻。
-    
+    \item  AI Civilian：AI的子类，不允许被攻击（移除damageable标签），只会巡逻。
+    \item  AI Animal：动物，使用简化版的AI逻辑（Pawn Sensing），没事就游荡，看见玩家就会过来攻击，仅会受到弓箭伤害，三次后死亡。
+    \item  宠物：并非动物的子类，而是一类可以被控制的Pawn。玩家骑上去时由玩家控制，玩家下去时由AI控制器控制。
 
 
 
